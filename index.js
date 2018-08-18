@@ -9,5 +9,9 @@ module.exports = {
     this.options = defaultsDeep(parent.options, this.options);
 
     this._super.included.apply(this, arguments);
+
+    this.import('node_modules/lottie-web/build/player/lottie.js', {
+      using: [{ transformation: 'amd', as: 'lottie-web' }]
+    });
   },
 };

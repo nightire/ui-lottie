@@ -1,0 +1,217 @@
+* UiLottie 组件使用说明
+
+** 组件用法
+
+*** 动画数据
+
+   UiLottie 可以用两种方式传递动画数据，通过 url 或 path 读取动画数据文件，或者直接提供 JSON 格式的数据：
+
+   #+BEGIN_SRC htmlbars
+     <UiLottie @path="assets/lottie/example.json" />
+
+     {{!-- 或 --}}
+     <UiLottie @path="https://example.com/lottie/example.json" />
+
+     {{!-- 或 --}}
+     <UiLottie @data={{this.data}} />
+   #+END_SRC
+
+   在上面第二个例子里的 ~this.data~ 相当于 ~JSON.parse~ JSON 文本数据。
+
+*** 渲染方式
+
+   UiLottie 支持切换三种渲染方式，分别是 *svg* *canvas* 和 *html* 。
+
+   #+BEGIN_SRC htmlbars
+     <UiLottie @path="..." @renderAs="svg" />
+     <UiLottie @path="..." @renderAs="canvas" />
+     <UiLottie @path="..." @renderAs="html" />
+   #+END_SRC
+
+   *svg* 是默认渲染方式。三种渲染方式的对比参见：[[https://github.com/airbnb/lottie-web/wiki/Features][渲染方式的特点]]。
+
+*** 自动播放
+
+   UiLottie 默认在渲染后自动播放（一次），通过指定 ~autoplay~ 参数为 ~false~ 可以禁止自动播放。
+
+   #+BEGIN_SRC htmlbars
+   <UiLottie @path="..." @autoplay={{false}} />
+   #+END_SRC
+
+*** 循环播放
+
+   UiLottie 默认只会播放一次，通过指定 ~loop~ 参数为 ~true~ 可以开启循环播放模式。
+
+   #+BEGIN_SRC htmlbars
+   <UiLottie @path="..." @loop={{true}} />
+   #+END_SRC
+
+*** 指定名称
+
+   lottie 可以为每一个 animation 实例指定一个名字，这个名字是每一个 animation 实例的唯一标识符，当同时存在多个 animation 实例的时候可以使用这个名称来指定 API 操作的 animation 实例是哪一个。关于进阶的 API 操作，参加后文的章节。
+
+   UiLottie 默认会使用组件的 `this.elementId` 作为 animation 实例的名字，也可以通过指定 ~name~ 参数来设置名字。不过通常是不需要的，因为 UiLottie 总是一个组件渲染一个 lottie animation。
+
+   #+BEGIN_SRC htmlbars
+   <UiLottie @path="..." @name="my_animation" />
+   #+END_SRC
+
+*** 是否隐藏
+
+   UiLottie 可以通过设定 ~hidden~ 参数来切换动画的可见性。
+
+   #+BEGIN_SRC htmlbars
+   <UiLottie @path="..." @hidden={{true}} />
+   #+END_SRC
+
+** 事件响应
+
+    UiLottie 允许传递多种事件回调函数，在动画播放的不同阶段可以获取相关的信息。
+
+**** ~onConfigReady~ 配置参数设定完成后触发，这也是最早响应的事件回调。
+
+**** ~onDataReady~ 动画数据接收完毕后触发。远程 url 数据本身有读取时间，所以这个事件可以确定数据加载是否完成了。
+
+**** ~onDataFailed~ 如果数据加载或读取失败，则此事件会被触发。
+
+**** ~onLoadedImages~ 如果动画数据里包含图片，那么在图片读取完成后此事件会被触发。
+
+**** ~onDOMLoaded~ 动画被成功插入 DOM 之后触发，在此事件之后可以安全的操作动画相关的 DOM 元素。
+
+**** ~onDestroy~ 当动画被销毁的时候会触发此事件。
+
+**** ~onEnterFrame~ 动画由若干帧组成，播放动画就是以一定的速率不断一帧接一帧的渲染，在每一帧开始渲染的时候此事件会被触发。它接收一个参数，具有以下属性：
+   - ~type~ 事件类型，其值为： ~enterFrame~
+   - ~direction~ 动画方向， ~1~ 为正向， ~-1~ 为反向
+   - ~totalTime~ 动画时长，动画的帧数是用时间长度来表示其单位的，单位时长 * 帧数 = 总时长
+   - ~currentTime~ 当前帧时间，其值为数字，但不一定是整数
+
+**** ~onComplete~ 当动画播放完毕后会触发此事件，但循环播放的动画并不会触发这个事件。它接收一个参数，具有以下属性：
+   - ~type~ 事件类型，其值为： ~complete~
+   - ~direction~ 动画方向， ~1~ 为正向， ~-1~ 为反向
+
+**** ~onLoopComplete~ 对于循环播放的动画，每完成一次循环都会触发这个事件。它接收一个参数，具有以下属性：
+   - ~type~ 事件类型，其值为： ~loopComplete~
+   - ~direction~ 动画方向， ~1~ 为正向， ~-1~ 为反向
+   - ~currentLoop~ 当前循环次数，其值为正整数
+
+   以下用 `onComplete` 为例演示以下回调函数的定义和使用
+
+   #+BEGIN_SRC typescript
+     export default class extends Controller {
+
+       onComplete(event) {
+         console.log(event); // { type: "complete", direction: 1 }
+       }
+
+     }
+   #+END_SRC
+
+   #+BEGIN_SRC htmlbars
+     <UiLottie @path="..." @onComplete={{action this.onComplete}} />
+   #+END_SRC
+
+** 进阶控制
+
+*** 获得动画实例
+
+    想要更精细的控制动画的行为，首先要做的是在渲染动画的上下文中获取渲染后的动画实例对象，UiLottie 提供了一个 `afterCreate` 钩子函数，会在组件创建 lottie 的动画实例对象之后调用并且将这个实例对象传递给外部的上下文。以下是用法示例：
+
+    #+BEGIN_SRC typescript
+      export default class extends Controller {
+
+        afterRender(lottie) {
+          set(this, 'lottie', lottie);
+        }
+
+      }
+    #+END_SRC
+
+    #+BEGIN_SRC htmlbars
+      <UiLottie @path="..." @afterCreate={{action this.afterCreate}} />
+
+      {{!-- 之后，可以用 {{this.lottie}} 访问这个动画的实例对象了 --}}
+    #+END_SRC
+
+    lottie 动画实例对象拥有很多有用的属性和方法，以下分别举例说明。
+
+*** 显示/隐藏
+
+    除了之前说的 ~hidden~ 属性之外，还可以使用 lottie 动画实例对象来操作动画的显示/隐藏状态：
+
+    #+BEGIN_SRC typescript
+      export default class extends Controller {
+
+        hideAnimation() {
+          this.lottie.hide();
+        }
+
+        showAnimation() {
+          this.lottie.show();
+        }
+
+      }
+    #+END_SRC
+
+    #+BEGIN_SRC htmlbars
+      <UiLottie @path="..." @afterCreate={{action this.afterCreate}} />
+
+      <button {{action this.hideAnimation}}>隐藏动画</button>
+      <button {{action this.showAnimation}}>显示动画</button>
+    #+END_SRC
+
+*** 播放/停止/暂停
+
+    这三种操作仅适用于循环播放的动画，单次动画不能播放/停止/暂停：
+
+    #+BEGIN_SRC typescript
+      export default class extends Controller {
+
+        playAnimation() {
+          this.lottie.play(this.lottie.name); // name 是可选的
+        }
+
+        stopAnimation() {
+          this.lottie.stop(this.lottie.name); // name 是可选的
+        }
+
+        pauseAnimation() {
+          this.lottie.togglePause(this.lottie.name); // name 是可选的
+        }
+
+      }
+    #+END_SRC
+
+    #+BEGIN_SRC htmlbars
+      <UiLottie @path="..." @loop={{true}} @afterCreate={{action this.afterCreate}} />
+
+      <button {{action this.playAnimation}}>隐藏动画</button>
+      <button {{action this.stopAnimation}}>显示动画</button>
+      <button {{action this.pauseAnimation}}>暂停/恢复动画</button>
+    #+END_SRC
+
+*** 反向播放/重新播放
+
+    这两种操作既可以用于单次动画也可以用于循环动画，对于循环动画，每次切换反向播放之后都会重置 ~currentLoop~ 。
+
+    #+BEGIN_SRC typescript
+      export default class extends Controller {
+
+        invertAnimation() {
+          this.lottie.setDirection(this.lottie.playDirection * -1);
+          this.lottie.play(this.lottie.name);
+        }
+
+        replayAnimation() {
+          this.lottie.goToAndPlay(0); // 0 代表动画第一帧，当然也可以从其他帧开始播放
+        }
+
+      }
+    #+END_SRC
+
+    #+BEGIN_SRC htmlbars
+      <UiLottie @path="..." @loop={{true}} @afterCreate={{action this.afterCreate}} />
+
+      <button {{action this.invertAnimation}}>反向播放</button>
+      <button {{action this.replayAnimation}}>重新播放</button>
+    #+END_SRC

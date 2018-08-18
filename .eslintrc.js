@@ -2,7 +2,7 @@
 
 module.exports = {
   root: true,
-  parser: 'babel-eslint',
+  parser: 'typescript-eslint-parser',
   parserOptions: {
     ecmaFeatures: {
       experimentalObjectRestSpread: true
@@ -11,7 +11,8 @@ module.exports = {
     sourceType: 'module'
   },
   plugins: [
-    'ember'
+    'ember',
+    'qunit'
   ],
   extends: [
     'eslint:recommended',
@@ -31,6 +32,14 @@ module.exports = {
   rules: {
   },
   overrides: [
+    {
+      files: ['**/*.ts'],
+      rules: {
+        'no-undef': 'off',
+        'no-unused-vars': 'off',
+        'ember/no-attrs-snapshot': 'off'
+      }
+    },
     {
       files: [
         '.eslintrc.js',

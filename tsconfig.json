@@ -19,13 +19,28 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {
-      "*": ["node_modules/*"],
-      "@choiceform/ui-lottie/*": ["addon/*"],
-      "@choiceform/ui-lottie/tests/*": ["tests/*"],
-      "@choiceform/ui-lottie/config/*": ["config/*"],
-      "dummy/*": ["tests/dummy/app/*", "app/*"],
-      "dummy/tests/*": ["tests/*"],
-      "@ember-decorators/*": ["node_modules/@ember-decorators/*"]
+      "dummy/tests/*": [
+        "tests/*"
+      ],
+      "dummy/*": [
+        "tests/dummy/app/*",
+        "app/*"
+      ],
+      "@choiceform/ui-lottie": [
+        "addon"
+      ],
+      "@choiceform/ui-lottie/*": [
+        "addon/*"
+      ],
+      "@choiceform/ui-lottie/test-support": [
+        "addon-test-support"
+      ],
+      "@choiceform/ui-lottie/test-support/*": [
+        "addon-test-support/*"
+      ],
+      "*": [
+        "types/*"
+      ]
     },
     "pretty": true,
     "strictFunctionTypes": false,
@@ -34,9 +49,11 @@
     "target": "es2017"
   },
   "include": [
-    "addon",
-    "app",
-    "tests",
-    "types",
+    "app/**/*",
+    "addon/**/*",
+    "tests/**/*",
+    "types/**/*",
+    "test-support/**/*",
+    "addon-test-support/**/*"
   ]
 }
