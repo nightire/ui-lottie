@@ -1,13 +1,9 @@
 'use strict';
 
-const defaultsDeep = require('lodash.defaultsdeep');
-
 module.exports = {
   name: '@choiceform/ui-lottie',
 
-  included(parent) {
-    this.options = defaultsDeep(parent.options, this.options);
-
+  included() {
     this._super.included.apply(this, arguments);
 
     this.import('node_modules/lottie-web/build/player/lottie.js', {

@@ -1,19 +1,11 @@
 'use strict';
 
 const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
-const defaultsDeep = require('lodash.defaultsdeep');
-const options = require('@choiceform/ui-foundation/defaults')();
 
 module.exports = function(defaults) {
-  const app = new EmberAddon(defaults, defaultsDeep({
-
-    useDeviceJS: false,
-
-    useRebootCSS: false,
-
-    importSVGIcon: false
-
-  }, options));
+  let app = new EmberAddon(defaults, {
+    // Add options here
+  });
 
   /*
     This build file specifies the options for the dummy test app of this

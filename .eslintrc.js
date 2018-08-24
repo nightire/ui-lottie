@@ -65,7 +65,9 @@ module.exports = {
         browser: false,
         node: true
       },
-      plugins: ['node']
+      plugins: ['node'],
+      rules: Object.assign({}, require('eslint-plugin-node').configs.recommended.rules, {
+      })
     }
   ]
 };
