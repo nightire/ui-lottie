@@ -115,7 +115,7 @@
 
 *** 获得动画实例
 
-    想要更精细的控制动画的行为，首先要做的是在渲染动画的上下文中获取渲染后的动画实例对象，UiLottie 提供了一个 `afterCreate` 钩子函数，会在组件创建 lottie 的动画实例对象之后调用并且将这个实例对象传递给外部的上下文。以下是用法示例：
+    想要更精细的控制动画的行为，首先要做的是在渲染动画的上下文中获取渲染后的动画实例对象，UiLottie 提供了一个 `afterRender` 钩子函数，会在组件创建 lottie 的动画实例对象之后调用并且将这个实例对象传递给外部的上下文。以下是用法示例：
 
     #+BEGIN_SRC typescript
       export default class extends Controller {
@@ -128,7 +128,7 @@
     #+END_SRC
 
     #+BEGIN_SRC htmlbars
-      <UiLottie @path="..." @afterCreate={{action this.afterCreate}} />
+      <UiLottie @path="..." @afterRender={{action this.afterRender}} />
 
       {{!-- 之后，可以用 {{this.lottie}} 访问这个动画的实例对象了 --}}
     #+END_SRC
@@ -154,7 +154,7 @@
     #+END_SRC
 
     #+BEGIN_SRC htmlbars
-      <UiLottie @path="..." @afterCreate={{action this.afterCreate}} />
+      <UiLottie @path="..." @afterRender={{action this.afterRender}} />
 
       <button {{action this.hideAnimation}}>隐藏动画</button>
       <button {{action this.showAnimation}}>显示动画</button>
@@ -183,7 +183,7 @@
     #+END_SRC
 
     #+BEGIN_SRC htmlbars
-      <UiLottie @path="..." @loop={{true}} @afterCreate={{action this.afterCreate}} />
+      <UiLottie @path="..." @loop={{true}} @afterRender={{action this.afterRender}} />
 
       <button {{action this.playAnimation}}>隐藏动画</button>
       <button {{action this.stopAnimation}}>显示动画</button>
@@ -210,7 +210,7 @@
     #+END_SRC
 
     #+BEGIN_SRC htmlbars
-      <UiLottie @path="..." @loop={{true}} @afterCreate={{action this.afterCreate}} />
+      <UiLottie @path="..." @loop={{true}} @afterRender={{action this.afterRender}} />
 
       <button {{action this.invertAnimation}}>反向播放</button>
       <button {{action this.replayAnimation}}>重新播放</button>

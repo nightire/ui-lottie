@@ -66,7 +66,7 @@ export class UiLottieComponentTest extends EmberRenderingTest {
     assert.dom(`.${styles.wrapper} > div > svg`).exists();
   }
 
-  @test async 'invoke afterCreate hook in didInsertElement'(assert: Assert) {
+  @test async 'invoke afterRender hook in didInsertElement'(assert: Assert) {
     this.set('data', inlineAnimationData);
     this.set('afterRender', lottie => this.set('lottie', lottie));
     await render(hbs`{{ui-lottie data=this.data afterRender=this.afterRender}}`);
