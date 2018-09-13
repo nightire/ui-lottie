@@ -2,7 +2,9 @@ import lottie, { AnimationItem, LottieOptions } from 'lottie-web';
 
 // @ts-ignore;
 import styles from '@choiceform/ui-lottie/components/ui-lottie/styles';
-import { attribute } from '@ember-decorators/component';
+// @ts-ignore;
+import layout from '@choiceform/ui-lottie/components/ui-lottie/template';
+import { attribute, classNames } from '@ember-decorators/component';
 import { computed } from '@ember-decorators/object';
 import { reads } from '@ember-decorators/object/computed';
 import Component from '@ember/component';
@@ -21,11 +23,10 @@ const EVENTS: string[] = [
   'destroy'
 ];
 
+@classNames(styles.wrapper)
 export default class UiLottieComponent extends Component.extend({
 
-  styles,
-
-  localClassNames: 'wrapper',
+  layout
 
 }) {
 
