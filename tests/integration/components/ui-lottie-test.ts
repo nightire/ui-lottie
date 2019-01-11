@@ -1,16 +1,15 @@
+// @ts-ignore
+import styles from '@choiceform/ui-lottie/components/ui-lottie/styles';
+import { render } from '@ember/test-helpers';
 import { inlineAnimationData } from 'dummy/tests/fixtures/lottie';
 import { timeout } from 'ember-concurrency';
 import { EmberRenderingTest } from 'ember-qunit-decorators/test-support';
 import hbs from 'htmlbars-inline-precompile';
+import { AnimationItem } from 'lottie-web';
 import { suite, test } from 'qunit-decorators';
-
-// @ts-ignore
-import styles from '@choiceform/ui-lottie/components/ui-lottie/styles';
-import { render } from '@ember/test-helpers';
 
 @suite('Integration | Component | ui-lottie')
 export class UiLottieComponentTest extends EmberRenderingTest {
-
   @test async 'renders with a local className'(assert: Assert) {
     await render(hbs`{{ui-lottie}}`);
     assert.dom(`.${styles.wrapper}`).exists();
@@ -68,14 +67,20 @@ export class UiLottieComponentTest extends EmberRenderingTest {
 
   @test async 'invoke afterRender hook in didInsertElement'(assert: Assert) {
     this.set('data', inlineAnimationData);
-    this.set('afterRender', lottie => this.set('lottie', lottie));
-    await render(hbs`{{ui-lottie data=this.data afterRender=this.afterRender}}`);
+    this.set('afterRender', (lottie: AnimationItem) =>
+      this.set('lottie', lottie)
+    );
+    await render(
+      hbs`{{ui-lottie data=this.data afterRender=this.afterRender}}`
+    );
     assert.ok((this as any).lottie.isLoaded);
   }
 
   @test async 'renders animation with loop'(assert: Assert) {
     this.set('data', inlineAnimationData);
-    this.set('afterRender', lottie => this.set('lottie', lottie));
+    this.set('afterRender', (lottie: AnimationItem) =>
+      this.set('lottie', lottie)
+    );
     await render(hbs`
       {{ui-lottie data=this.data loop=true afterRender=(action this.afterRender)}}
     `);
@@ -84,16 +89,22 @@ export class UiLottieComponentTest extends EmberRenderingTest {
 
   @test async 'renders animation without autoplay'(assert: Assert) {
     this.set('data', inlineAnimationData);
-    this.set('afterRender', lottie => this.set('lottie', lottie));
+    this.set('afterRender', (lottie: AnimationItem) =>
+      this.set('lottie', lottie)
+    );
     await render(hbs`
       {{ui-lottie data=this.data autoplay=false afterRender=(action this.afterRender)}}
     `);
     assert.notOk((this as any).lottie.autoplay);
   }
 
-  @test async 'renders animation under the same name as component\'s id'(assert: Assert) {
+  @test async "renders animation under the same name as component's id"(
+    assert: Assert
+  ) {
     this.set('data', inlineAnimationData);
-    this.set('afterRender', lottie => this.set('lottie', lottie));
+    this.set('afterRender', (lottie: AnimationItem) =>
+      this.set('lottie', lottie)
+    );
     await render(hbs`
       {{ui-lottie data=this.data afterRender=(action this.afterRender)}}
     `);
@@ -102,7 +113,9 @@ export class UiLottieComponentTest extends EmberRenderingTest {
 
   @test async 'can take a specifc name as well'(assert: Assert) {
     this.set('data', inlineAnimationData);
-    this.set('afterRender', lottie => this.set('lottie', lottie));
+    this.set('afterRender', (lottie: AnimationItem) =>
+      this.set('lottie', lottie)
+    );
     await render(hbs`
       {{ui-lottie data=this.data name="foo" afterRender=(action this.afterRender)}}
     `);
@@ -111,7 +124,9 @@ export class UiLottieComponentTest extends EmberRenderingTest {
 
   @test async 'animation can be played and stopped'(assert: Assert) {
     this.set('data', inlineAnimationData);
-    this.set('afterRender', lottie => this.set('lottie', lottie));
+    this.set('afterRender', (lottie: AnimationItem) =>
+      this.set('lottie', lottie)
+    );
     await render(hbs`
       {{ui-lottie data=this.data name="foo" afterRender=(action this.afterRender)}}
     `);
@@ -126,7 +141,9 @@ export class UiLottieComponentTest extends EmberRenderingTest {
 
   @test async 'animation can change its playing speed'(assert: Assert) {
     this.set('data', inlineAnimationData);
-    this.set('afterRender', lottie => this.set('lottie', lottie));
+    this.set('afterRender', (lottie: AnimationItem) =>
+      this.set('lottie', lottie)
+    );
     await render(hbs`
       {{ui-lottie data=this.data name="foo" afterRender=(action this.afterRender)}}
     `);
@@ -138,7 +155,9 @@ export class UiLottieComponentTest extends EmberRenderingTest {
 
   @test async 'animation can change its playing direction'(assert: Assert) {
     this.set('data', inlineAnimationData);
-    this.set('afterRender', lottie => this.set('lottie', lottie));
+    this.set('afterRender', (lottie: AnimationItem) =>
+      this.set('lottie', lottie)
+    );
     await render(hbs`
       {{ui-lottie data=this.data name="foo" afterRender=(action this.afterRender)}}
     `);
@@ -148,33 +167,48 @@ export class UiLottieComponentTest extends EmberRenderingTest {
     assert.equal((this as any).lottie.playDirection, -1);
   }
 
-  @test async 'animation\' visibility can be specified'(assert: Assert) {
+  @test async "animation' visibility can be specified"(assert: Assert) {
     this.set('data', inlineAnimationData);
-    this.set('afterRender', lottie => this.set('lottie', lottie));
+    this.set('afterRender', (lottie: AnimationItem) =>
+      this.set('lottie', lottie)
+    );
     await render(hbs`
       {{ui-lottie data=this.data hidden=true afterRender=(action this.afterRender)}}
     `);
-    assert.equal((this as any).lottie.renderer.layerElement.style.display, 'none');
+    assert.equal(
+      (this as any).lottie.renderer.layerElement.style.display,
+      'none'
+    );
   }
 
-  @test async 'animation\' visibility can be toggleed'(assert: Assert) {
+  @test async "animation' visibility can be toggleed"(assert: Assert) {
     this.set('data', inlineAnimationData);
-    this.set('afterRender', lottie => this.set('lottie', lottie));
+    this.set('afterRender', (lottie: AnimationItem) =>
+      this.set('lottie', lottie)
+    );
     await render(hbs`
       {{ui-lottie data=this.data afterRender=(action this.afterRender)}}
     `);
     assert.equal((this as any).lottie.renderer.layerElement.style.display, '');
 
     (this as any).lottie.hide();
-    assert.equal((this as any).lottie.renderer.layerElement.style.display, 'none');
+    assert.equal(
+      (this as any).lottie.renderer.layerElement.style.display,
+      'none'
+    );
 
     (this as any).lottie.show();
-    assert.equal((this as any).lottie.renderer.layerElement.style.display, 'block');
+    assert.equal(
+      (this as any).lottie.renderer.layerElement.style.display,
+      'block'
+    );
   }
 
   @test async 'animation can be destroyed'(assert: Assert) {
     this.set('data', inlineAnimationData);
-    this.set('afterRender', lottie => this.set('lottie', lottie));
+    this.set('afterRender', (lottie: AnimationItem) =>
+      this.set('lottie', lottie)
+    );
     await render(hbs`
       {{ui-lottie data=this.data name="foo" afterRender=(action this.afterRender)}}
     `);
@@ -190,7 +224,7 @@ export class UiLottieComponentTest extends EmberRenderingTest {
 
   @test async 'responds config_ready event'(assert: Assert) {
     let fired = false;
-    this.set('onConfigReady', () => fired = true);
+    this.set('onConfigReady', () => (fired = true));
     assert.notOk(fired);
 
     this.set('path', '//media.choiceform.io/lottie/heart.json');
@@ -204,7 +238,7 @@ export class UiLottieComponentTest extends EmberRenderingTest {
 
   @test async 'responds data_ready event'(assert: Assert) {
     let fired = false;
-    this.set('onDataReady', () => fired = true);
+    this.set('onDataReady', () => (fired = true));
     assert.notOk(fired);
 
     this.set('path', '//media.choiceform.io/lottie/heart.json');
@@ -222,7 +256,7 @@ export class UiLottieComponentTest extends EmberRenderingTest {
 
   @test async 'responds DOMLoaded event'(assert: Assert) {
     let fired = false;
-    this.set('onDOMLoaded', () => fired = true);
+    this.set('onDOMLoaded', () => (fired = true));
     assert.notOk(fired);
 
     this.set('path', '//media.choiceform.io/lottie/heart.json');
@@ -235,8 +269,8 @@ export class UiLottieComponentTest extends EmberRenderingTest {
   }
 
   @test async 'responds enterFrame event for each time frame'(assert: Assert) {
-    let capturedEvent;
-    this.set('onEnterFrame', event => capturedEvent = event);
+    let capturedEvent: any;
+    this.set('onEnterFrame', (event: any) => (capturedEvent = event));
     assert.equal(typeof capturedEvent, 'undefined');
 
     this.set('path', '//media.choiceform.io/lottie/heart.json');
@@ -252,8 +286,8 @@ export class UiLottieComponentTest extends EmberRenderingTest {
   }
 
   @test async 'responds complete event once animation stopped'(assert: Assert) {
-    let capturedEvent;
-    this.set('onComplete', event => capturedEvent = event);
+    let capturedEvent: any;
+    this.set('onComplete', (event: any) => (capturedEvent = event));
     assert.equal(typeof capturedEvent, 'undefined');
 
     this.set('path', '//media.choiceform.io/lottie/heart.json');
@@ -267,8 +301,8 @@ export class UiLottieComponentTest extends EmberRenderingTest {
   }
 
   @test async 'responds loopComplete event for each loop'(assert: Assert) {
-    let capturedEvent;
-    this.set('onLoopComplete', event => capturedEvent = event);
+    let capturedEvent: any;
+    this.set('onLoopComplete', (event: any) => (capturedEvent = event));
     assert.equal(typeof capturedEvent, 'undefined');
 
     this.set('path', '//media.choiceform.io/lottie/heart.json');
@@ -287,12 +321,16 @@ export class UiLottieComponentTest extends EmberRenderingTest {
     assert.equal(capturedEvent.currentLoop, 2);
   }
 
-  @test async 'responds destroy event when animation got destroyed'(assert: Assert) {
-    let capturedEvent;
-    this.set('onDestroy', event => capturedEvent = event);
+  @test async 'responds destroy event when animation got destroyed'(
+    assert: Assert
+  ) {
+    let capturedEvent: any;
+    this.set('onDestroy', (event: any) => (capturedEvent = event));
 
     this.set('path', '//media.choiceform.io/lottie/heart.json');
-    this.set('afterRender', lottie => this.set('lottie', lottie));
+    this.set('afterRender', (lottie: AnimationItem) =>
+      this.set('lottie', lottie)
+    );
     await render(hbs`
       {{ui-lottie path=this.path name="foo"
         afterRender=(action this.afterRender)
@@ -308,5 +346,4 @@ export class UiLottieComponentTest extends EmberRenderingTest {
     assert.equal(capturedEvent.type, 'destroy');
     assert.deepEqual(capturedEvent.target, (this as any).lottie);
   }
-
 }

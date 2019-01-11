@@ -1,5 +1,4 @@
 declare module 'lottie-web' {
-
   interface LottieOptions {
     name: string;
     path: string;
@@ -38,6 +37,5 @@ declare module 'lottie-web' {
     destroy(name: string): void;
   }
 
-  function loadAnimation(LottieOptions): AnimationItem;
-
+  function loadAnimation(options: LottieOptions): AnimationItem;
 }

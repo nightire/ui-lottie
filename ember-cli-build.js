@@ -1,18 +1,29 @@
 'use strict';
 
+const defaultOptions = require('@choiceform/ui-foundation/defaults')({
+  // @import 模块导入规则
+  import: {},
+
+  // CSS 变量
+  variables: {},
+
+  // 自定义 Media Queries
+  media: {},
+});
+
 const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
+const merge = require('ember-cli-lodash-subset').merge;
 
 module.exports = function(defaults) {
-  let app = new EmberAddon(defaults, {
-    // Add options here
+  let options = merge({}, defaultOptions, {
+    useDeviceJS: false,
+
+    useNormalizeCSS: false,
+
+    useObjectFitImagesPolyfill: false,
   });
 
-  /*
-    This build file specifies the options for the dummy test app of this
-    addon, located in `/tests/dummy`
-    This build file does *not* influence how the addon or the app using it
-    behave. You most likely want to be modifying `./index.js` or app's build file
-  */
+  let app = new EmberAddon(defaults, options);
 
   return app.toTree();
 };

@@ -1,59 +1,31 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "allowSyntheticDefaultImports": true,
     "alwaysStrict": true,
+    "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "inlineSourceMap": true,
     "inlineSources": true,
+    "locale": "zh-CN",
     "module": "es2015",
     "moduleResolution": "node",
     "noEmit": true,
     "noEmitOnError": false,
     "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": false,
-    "noImplicitThis": true,
-    "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {
-      "dummy/tests/*": [
-        "tests/*"
-      ],
-      "dummy/*": [
-        "tests/dummy/app/*",
-        "app/*"
-      ],
-      "@choiceform/ui-lottie": [
-        "addon"
-      ],
-      "@choiceform/ui-lottie/*": [
-        "addon/*"
-      ],
-      "@choiceform/ui-lottie/test-support": [
-        "addon-test-support"
-      ],
-      "@choiceform/ui-lottie/test-support/*": [
-        "addon-test-support/*"
-      ],
-      "*": [
-        "types/*"
-      ]
+      "dummy/*": ["tests/dummy/app/*", "app/*"],
+      "dummy/tests/*": ["tests/*"],
+      "@choiceform/ui-lottie/*": ["addon/*"],
+      "@choiceform/ui-lottie/test-support/*": ["addon-test-support/*"],
+      "*": ["types/*"]
     },
     "pretty": true,
-    "strictFunctionTypes": false,
-    "strictNullChecks": true,
-    "strictPropertyInitialization": false,
+    "strict": true,
     "target": "es2017"
   },
-  "include": [
-    "app/**/*",
-    "addon/**/*",
-    "tests/**/*",
-    "types/**/*",
-    "test-support/**/*",
-    "addon-test-support/**/*"
-  ]
+  "include": ["addon/**/*", "app/**/*", "tests/**/*", "types/**/*"]
 }

@@ -1,7 +1,7 @@
-{{ui-lottie
-  path="https://media.choiceform.io/lottie/heart.json"
-  afterRender=(action this.afterRender)}}
+{{this.animation.name}}
+
+<UiLottie
+  @path="https://media.choiceform.io/lottie/heart.json"
+  @afterRender={{action this.afterRender}}/>
 
 {{outlet}}
-
-{{log this.animation}}

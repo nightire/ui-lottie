@@ -2,72 +2,72 @@
 
 module.exports = {
   root: true,
-  parser: 'typescript-eslint-parser',
+  parser: 'babel-eslint',
   parserOptions: {
-    ecmaFeatures: {
-      experimentalObjectRestSpread: true
-    },
     ecmaVersion: 2017,
-    sourceType: 'module'
+    // ecmaFeatures: {
+    //   legacyDecorators: true,
+    //   experimentalDecorators: true,
+    //   experimentalObjectRestSpread: true,
+    // },
+    sourceType: 'module',
   },
-  plugins: [
-    'ember',
-    'qunit'
-  ],
+  plugins: ['ember', 'qunit', 'typescript'],
   extends: [
     'eslint:recommended',
-    'plugin:ember/recommended'
+    'plugin:ember/recommended',
+    'plugin:qunit/recommended',
   ],
   env: {
-    amd: true,
     browser: true,
-    commonjs: true,
-    es6: true,
-    node: true,
-    qunit: true,
-    serviceworker: true,
-    'shared-node-browser': true,
-    worker: true
   },
-  rules: {
-  },
+  rules: {},
   overrides: [
     {
+      parser: 'typescript-eslint-parser',
       files: ['**/*.ts'],
       rules: {
         'no-undef': 'off',
         'no-unused-vars': 'off',
-        'ember/no-attrs-snapshot': 'off'
-      }
+        'ember/no-attrs-snapshot': 'off',
+      },
     },
     {
       files: [
         '.eslintrc.js',
+        '.prettierrc.js',
         '.template-lintrc.js',
         'ember-cli-build.js',
         'index.js',
         'testem.js',
         'blueprints/*/index.js',
         'config/**/*.js',
-        'tests/dummy/config/**/*.js'
+        'lib/*/index.js',
+        'tests/dummy/config/**/*.js',
       ],
       excludedFiles: [
         'addon/**',
         'addon-test-support/**',
         'app/**',
-        'tests/dummy/app/**'
+        'tests/dummy/app/**',
+        'types',
       ],
       parserOptions: {
+        ecmaVersion: 2015,
         sourceType: 'script',
-        ecmaVersion: 2015
       },
       env: {
-        browser: false,
-        node: true
+        node: true,
       },
       plugins: ['node'],
-      rules: Object.assign({}, require('eslint-plugin-node').configs.recommended.rules, {
-      })
-    }
-  ]
+      rules: Object.assign(
+        {},
+        require('eslint-plugin-node').configs.recommended.rules,
+        {
+          'node/no-extraneous-require': 'off',
+          'node/no-unpublished-require': 'off',
+        }
+      ),
+    },
+  ],
 };
