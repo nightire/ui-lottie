@@ -1,5 +1,3 @@
-// @ts-ignore
-import template from '@choiceform/ui-lottie/components/ui-lottie/template';
 import { attribute, layout } from '@ember-decorators/component';
 import { computed } from '@ember-decorators/object';
 import { overridableReads } from '@ember-decorators/object/computed';
@@ -9,6 +7,9 @@ import { localClassNames } from 'ember-css-modules';
 import { SafeString } from 'handlebars';
 import lottie, { AnimationItem, LottieOptions } from 'lottie-web';
 
+// @ts-ignore
+import template from '@choiceform/ui-lottie/components/ui-lottie/template';
+
 // prettier-ignore
 const EVENTS: string[] = [
   'complete', 'loopComplete', 'enterFrame', 'segmentStart', 'config_ready',
@@ -17,7 +18,7 @@ const EVENTS: string[] = [
 
 @layout(template)
 @localClassNames('wrapper')
-class UiLottieComponent extends Component {
+export default class UiLottieComponent extends Component {
   [index: string]: any;
 
   width!: string;
@@ -114,5 +115,3 @@ class UiLottieComponent extends Component {
     }
   }
 }
-
-export default UiLottieComponent;

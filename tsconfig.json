@@ -17,9 +17,11 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {
-      "dummy/*": ["tests/dummy/app/*", "app/*"],
       "dummy/tests/*": ["tests/*"],
+      "dummy/*": ["tests/dummy/app/*", "app/*"],
+      "@choiceform/ui-lottie": ["addon"],
       "@choiceform/ui-lottie/*": ["addon/*"],
+      "@choiceform/ui-lottie/test-support": ["addon-test-support"],
       "@choiceform/ui-lottie/test-support/*": ["addon-test-support/*"],
       "*": ["types/*"]
     },
@@ -27,5 +29,12 @@
     "strict": true,
     "target": "es2017"
   },
-  "include": ["addon/**/*", "app/**/*", "tests/**/*", "types/**/*"]
+  "include": [
+    "app/**/*",
+    "addon/**/*",
+    "tests/**/*",
+    "types/**/*",
+    "test-support/**/*",
+    "addon-test-support/**/*"
+  ]
 }
