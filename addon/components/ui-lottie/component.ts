@@ -1,14 +1,10 @@
-import { attribute, layout } from '@ember-decorators/component';
+import { attribute } from '@ember-decorators/component';
 import { computed } from '@ember-decorators/object';
-import { overridableReads } from '@ember-decorators/object/computed';
 import Component from '@ember/component';
 import { camelize, capitalize, htmlSafe } from '@ember/string';
 import { localClassNames } from 'ember-css-modules';
 import { SafeString } from 'handlebars';
 import lottie, { AnimationItem, LottieOptions } from 'lottie-web';
-
-// @ts-ignore
-import template from '@choiceform/ui-lottie/components/ui-lottie/template';
 
 // prettier-ignore
 const EVENTS: string[] = [
@@ -16,9 +12,8 @@ const EVENTS: string[] = [
   'data_ready', 'data_failed', 'loaded_images', 'DOMLoaded', 'destroy',
 ];
 
-@layout(template)
 @localClassNames('wrapper')
-export default class UiLottieComponent extends Component {
+class UiLottieComponent extends Component {
   [index: string]: any;
 
   width!: string;
@@ -36,7 +31,7 @@ export default class UiLottieComponent extends Component {
     } else return null;
   }
 
-  @overridableReads('elementId') name!: string;
+  name!: string;
 
   path!: string;
 
@@ -53,7 +48,7 @@ export default class UiLottieComponent extends Component {
   @computed('name', 'path', 'data', 'loop', 'autoplay', 'renderer')
   get options(): LottieOptions {
     return {
-      name: this.name,
+      name: this.name || this.elementId,
       path: this.path,
       animationData: this.data,
       loop: this.loop,
@@ -69,7 +64,7 @@ export default class UiLottieComponent extends Component {
 
   REGISTED_EVENTS: { event: string; handler: Function }[] = [];
 
-  registerEventHandlers() {
+  registerEventHandlers(): void {
     EVENTS.forEach((event: any) => {
       const handlerName = `on${capitalize(camelize(event))}`;
 
@@ -80,7 +75,7 @@ export default class UiLottieComponent extends Component {
     });
   }
 
-  unregisterEventHandlers() {
+  unregisterEventHandlers(): void {
     // if animation was been destroyed from outside, its renderer will be null,
     // and that is the hint to bypass event unregistration
     if (this.lottie.renderer === null) return;
@@ -90,7 +85,7 @@ export default class UiLottieComponent extends Component {
     });
   }
 
-  didRender() {
+  didRender(): void {
     if (this.lottie) {
       this.unregisterEventHandlers();
       this.lottie.destroy(this.name);
@@ -108,10 +103,12 @@ export default class UiLottieComponent extends Component {
     }
   }
 
-  willDestroy() {
+  willDestroy(): void {
     if (typeof this.lottie !== 'undefined') {
       this.unregisterEventHandlers();
       this.lottie.destroy(this.name);
     }
   }
 }
+
+export default UiLottieComponent;

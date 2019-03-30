@@ -4,27 +4,29 @@ module.exports = {
   root: true,
   parser: 'babel-eslint',
   parserOptions: {
-    ecmaVersion: 2017,
-    // ecmaFeatures: {
-    //   legacyDecorators: true,
-    //   experimentalDecorators: true,
-    //   experimentalObjectRestSpread: true,
-    // },
+    ecmaVersion: 2018,
     sourceType: 'module',
   },
-  plugins: ['ember', 'qunit', 'typescript'],
+  plugins: ['ember', 'qunit', '@typescript-eslint'],
   extends: [
     'eslint:recommended',
     'plugin:ember/recommended',
     'plugin:qunit/recommended',
+    'plugin:@typescript-eslint/recommended',
   ],
   env: {
     browser: true,
   },
-  rules: {},
+  rules: {
+    indent: 'off',
+    '@typescript-eslint/indent': ['error', 2],
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/explicit-member-accessibility': 'off',
+    'no-unused-vars': ['error', { args: 'after-used' }],
+  },
   overrides: [
     {
-      parser: 'typescript-eslint-parser',
+      parser: '@typescript-eslint/parser',
       files: ['**/*.ts'],
       rules: {
         'no-undef': 'off',
@@ -34,6 +36,7 @@ module.exports = {
     },
     {
       files: [
+        '.ember-cli.js',
         '.eslintrc.js',
         '.prettierrc.js',
         '.template-lintrc.js',
@@ -57,6 +60,7 @@ module.exports = {
         sourceType: 'script',
       },
       env: {
+        browser: false,
         node: true,
       },
       plugins: ['node'],
